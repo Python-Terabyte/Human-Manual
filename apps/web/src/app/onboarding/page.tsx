@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Sparkles, Check } from 'lucide-react';
 import Link from 'next/link';
@@ -16,6 +17,7 @@ const steps = [
 ];
 
 export default function OnboardingPage() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     firstName: '',
@@ -187,14 +189,11 @@ export default function OnboardingPage() {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <Link
-                      href="/@asim-saleem"
+                    <button
+                      onClick={() => router.replace('/dashboard')}
                       className="block w-full py-3 rounded-xl bg-gradient-primary text-white font-semibold text-center"
                     >
-                      Open My Manual →
-                    </Link>
-                    <button className="w-full py-3 rounded-xl glass border border-border-default text-slate-300 font-medium text-sm">
-                      Add More Sections in Builder
+                      Go to My Dashboard →
                     </button>
                   </div>
                 </div>

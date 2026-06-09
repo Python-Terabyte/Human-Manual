@@ -19,15 +19,15 @@ interface Manual {
 }
 
 export default function DashboardPage() {
-  const { dbUser, loading, signOut } = useAuth();
+  const { firebaseUser, dbUser, loading, signOut } = useAuth();
   const router = useRouter();
   const [manual, setManual]       = useState<Manual | null>(null);
   const [creating, setCreating]   = useState(false);
   const [manualLoading, setManualLoading] = useState(true);
 
   useEffect(() => {
-    if (!loading && !dbUser) router.replace('/login');
-  }, [loading, dbUser, router]);
+    if (!loading && !firebaseUser) router.replace('/login');
+  }, [loading, firebaseUser, router]);
 
   useEffect(() => {
     if (!dbUser) return;
@@ -56,7 +56,7 @@ export default function DashboardPage() {
     router.replace('/');
   };
 
-  if (loading || !dbUser) {
+  if (loading || !firebaseUser) {
     return (
       <div className="min-h-screen bg-bg-base flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
