@@ -22,7 +22,7 @@ export default function RegisterPage() {
   const [error, setError]       = useState('');
 
   const afterAuth = async () => {
-    await syncUser();
+    try { await syncUser(); } catch { /* AuthContext retries on next render */ }
     router.replace('/onboarding');
   };
 

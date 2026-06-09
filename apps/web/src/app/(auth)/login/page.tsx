@@ -24,7 +24,7 @@ export default function LoginPage() {
   const [success, setSuccess]   = useState('');
 
   const afterAuth = async () => {
-    await syncUser();
+    try { await syncUser(); } catch { /* AuthContext retries on next render */ }
     router.replace('/dashboard');
   };
 
