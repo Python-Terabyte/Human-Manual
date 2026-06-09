@@ -142,6 +142,7 @@ function Field({ label, type, value, onChange, placeholder, icon }: {
       <div className="relative">
         <div className="absolute left-3 top-3 text-slate-500">{icon}</div>
         <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} required
+          autoComplete={type === 'password' ? 'new-password' : type === 'email' ? 'email' : 'name'}
           className="w-full bg-bg-elevated border border-border-default rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary-500 transition-colors"
         />
       </div>

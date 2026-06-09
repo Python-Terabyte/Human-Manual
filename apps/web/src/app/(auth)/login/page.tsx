@@ -244,6 +244,7 @@ function Field({ label, type, value, onChange, placeholder, icon }: {
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required
+          autoComplete={type === 'password' ? 'current-password' : type === 'email' ? 'email' : 'off'}
           className="w-full bg-bg-elevated border border-border-default rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary-500 transition-colors"
         />
       </div>

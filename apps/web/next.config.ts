@@ -6,6 +6,17 @@ import * as path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../../.env.local') });
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          // Allow Firebase OAuth popups to communicate back to the opener
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.humanmanual.app' },
