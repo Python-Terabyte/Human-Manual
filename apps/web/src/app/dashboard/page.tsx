@@ -41,7 +41,7 @@ export default function DashboardPage() {
     if (!dbUser) return;
     setCreating(true);
     try {
-      const m = await createManual({ title: `${dbUser.displayName ?? 'My'} Manual` });
+      const m = await createManual({ title: `${user.displayName ?? 'My'} Manual` });
       setManual(m);
       router.push(`/builder/${m.id}`);
     } catch (e) {
@@ -64,6 +64,19 @@ export default function DashboardPage() {
     );
   }
 
+  // Fallback to Firebase profile data while dbUser syncs
+  const user = dbUser ?? {
+    id: '',
+    firebaseUid: firebaseUser.uid,
+    email: firebaseUser.email ?? '',
+    username: null as string | null,
+    displayName: firebaseUser.displayName,
+    avatarUrl: firebaseUser.photoURL,
+    role: 'individual',
+    onboardingStep: 0,
+    createdAt: '',
+  };
+
   const completionColor = manual
     ? manual.completionScore >= 80 ? 'text-green-400'
       : manual.completionScore >= 40 ? 'text-yellow-400'
@@ -80,7 +93,7 @@ export default function DashboardPage() {
           {[
             { icon: BarChart2, label: 'Dashboard', href: '/dashboard', active: true },
             { icon: BookOpen, label: 'My Manual', href: manual ? `/builder/${manual.id}` : '#' },
-            { icon: Eye, label: 'Preview', href: dbUser.username ? `/${dbUser.username}` : '#', external: true },
+            { icon: Eye, label: 'Preview', href: user.username ? `/${user.username}` : '#', external: true },
             { icon: Users, label: 'Explore', href: '/explore' },
             { icon: Bell, label: 'Notifications', href: '/notifications' },
             { icon: Settings, label: 'Settings', href: '/settings' },
@@ -103,15 +116,15 @@ export default function DashboardPage() {
 
         <div className="border-t border-border-subtle pt-4">
           <div className="flex items-center gap-3 mb-4">
-            {dbUser.avatarUrl
-              ? <img src={dbUser.avatarUrl} className="w-9 h-9 rounded-full" alt="" />
+            {user.avatarUrl
+              ? <img src={user.avatarUrl} className="w-9 h-9 rounded-full" alt="" />
               : <div className="w-9 h-9 rounded-full bg-primary-500/20 flex items-center justify-center text-primary-300 font-bold text-sm">
-                  {(dbUser.displayName ?? dbUser.email)[0].toUpperCase()}
+                  {(user.displayName ?? user.email)[0].toUpperCase()}
                 </div>
             }
             <div className="min-w-0">
-              <p className="text-sm font-medium text-white truncate">{dbUser.displayName ?? 'User'}</p>
-              <p className="text-xs text-slate-500 truncate">@{dbUser.username ?? 'setup needed'}</p>
+              <p className="text-sm font-medium text-white truncate">{user.displayName ?? 'User'}</p>
+              <p className="text-xs text-slate-500 truncate">@{user.username ?? 'setup needed'}</p>
             </div>
           </div>
           <button onClick={handleSignOut} className="flex items-center gap-2 text-slate-500 hover:text-white text-sm transition-colors w-full">
@@ -125,7 +138,7 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white">
-            Good {getGreeting()}, {dbUser.displayName?.split(' ')[0] ?? 'there'} 👋
+            Good {getGreeting()}, {user.displayName?.split(' ')[0] ?? 'there'} 👋
           </h1>
           <p className="text-slate-400 text-sm mt-1">Here&apos;s what&apos;s happening with your manual.</p>
         </div>
@@ -198,9 +211,9 @@ export default function DashboardPage() {
                 >
                   <Pencil className="w-4 h-4" /> Edit Manual
                 </Link>
-                {manual.isPublished && dbUser.username && (
+                {manual.isPublished && user.username && (
                   <Link
-                    href={`/${dbUser.username}`}
+                    href={`/${user.username}`}
                     target="_blank"
                     className="flex items-center gap-2 px-4 py-2 rounded-xl glass border border-border-default hover:border-primary-500/40 transition-colors text-sm text-slate-300"
                   >
