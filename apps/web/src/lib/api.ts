@@ -1,6 +1,6 @@
 import { getIdToken } from './firebase';
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+const BASE = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 
 async function getHeaders(): Promise<HeadersInit> {
   const token = await getIdToken();
