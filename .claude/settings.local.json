@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(New-Item -ItemType Directory -Force \"D:\\\\Code\\\\My Manual\\\\docs\")",
+      "Bash(Out-Null)",
+      "Bash(New-Item -ItemType Directory -Force \"D:\\\\Code\\\\My Manual\\\\architecture\")",
+      "Bash(New-Item -ItemType Directory -Force \"D:\\\\Code\\\\My Manual\\\\database\")",
+      "Bash(New-Item -ItemType Directory -Force \"D:\\\\Code\\\\My Manual\\\\api\")",
+      "Bash(New-Item -ItemType Directory -Force \"D:\\\\Code\\\\My Manual\\\\frontend\")",
+      "Bash(New-Item -ItemType Directory -Force \"D:\\\\Code\\\\My Manual\\\\mobile\")",
+      "Bash(New-Item -ItemType Directory -Force \"D:\\\\Code\\\\My Manual\\\\infrastructure\")",
+      "Bash(Write-Host \"Directories created\")"
+    ]
+  }
+}
