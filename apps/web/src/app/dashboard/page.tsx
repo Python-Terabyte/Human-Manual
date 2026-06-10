@@ -8,10 +8,11 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   BookOpen, Eye, Users, TrendingUp, Plus, Pencil, Globe, Lock,
-  Share2, BarChart2, Bell, Settings, LogOut, ChevronRight,
+  Share2, BarChart2, Bell, Settings, LogOut, ChevronRight, Mail,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getMyManual, createManual } from '@/lib/api';
+import { InviteModal } from '@/components/InviteModal';
 
 interface Manual {
   id: string; slug: string; title: string;
@@ -24,6 +25,7 @@ export default function DashboardPage() {
   const [manual, setManual]       = useState<Manual | null>(null);
   const [creating, setCreating]   = useState(false);
   const [manualLoading, setManualLoading] = useState(true);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !firebaseUser) router.replace('/login');
@@ -97,21 +99,33 @@ export default function DashboardPage() {
             { icon: Users, label: 'Explore', href: '/explore' },
             { icon: Bell, label: 'Notifications', href: '/notifications' },
             { icon: Settings, label: 'Settings', href: '/settings' },
-          ].map(({ icon: Icon, label, href, active, external }) => (
-            <Link
-              key={label}
-              href={href}
-              target={external ? '_blank' : undefined}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-sm ${
-                active
-                  ? 'bg-primary-500/20 text-primary-300 font-medium'
-                  : 'text-slate-400 hover:text-white hover:bg-bg-elevated'
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              {label}
-            </Link>
-          ))}
+            { icon: Mail, label: 'Invite People', href: '#', onClick: () => setInviteOpen(true) },
+          ].map(({ icon: Icon, label, href, active, external, onClick }: any) =>
+            onClick ? (
+              <button
+                key={label}
+                onClick={onClick}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-sm w-full text-left text-slate-400 hover:text-white hover:bg-bg-elevated"
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+              </button>
+            ) : (
+              <Link
+                key={label}
+                href={href}
+                target={external ? '_blank' : undefined}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-sm ${
+                  active
+                    ? 'bg-primary-500/20 text-primary-300 font-medium'
+                    : 'text-slate-400 hover:text-white hover:bg-bg-elevated'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="border-t border-border-subtle pt-4">
@@ -257,8 +271,25 @@ export default function DashboardPage() {
               <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-slate-400 transition-colors" />
             </Link>
           ))}
+
+          {/* Invite card */}
+          <button
+            onClick={() => setInviteOpen(true)}
+            className="flex items-center gap-4 glass rounded-2xl border border-primary-500/20 p-4 hover:border-primary-500/50 transition-colors group text-left"
+          >
+            <div className="w-10 h-10 rounded-xl bg-primary-500/15 flex items-center justify-center">
+              <Mail className="w-5 h-5 text-primary-400" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white">Invite People</p>
+              <p className="text-xs text-slate-500 truncate">Send email invites to friends &amp; colleagues</p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-primary-400 transition-colors" />
+          </button>
         </div>
       </main>
+
+      <InviteModal open={inviteOpen} onClose={() => setInviteOpen(false)} />
     </div>
   );
 }

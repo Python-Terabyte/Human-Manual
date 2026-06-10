@@ -58,6 +58,16 @@ export const deleteSection  = (sectionId: string) =>
 export const reorderSections = (manualId: string, sections: Array<{ id: string; position: number }>) =>
   request<any[]>(`/manuals/${manualId}/sections/reorder`, { method: 'PATCH', body: JSON.stringify({ sections }) });
 
+// ── Invites ───────────────────────────────────────────────────────────────────
+export const sendInvites   = (emails: string[], message?: string) =>
+  request<InviteResult[]>('/invites', { method: 'POST', body: JSON.stringify({ emails, message }) });
+export const listMyInvites = () => request<SentInvite[]>('/invites');
+export const getInvite     = (token: string) => request<InviteDetails>('/invites/' + token);
+export const acceptInvite  = (token: string) =>
+  request<{ accepted: boolean }>('/invites/' + token + '/accept', { method: 'POST' });
+export const revokeInvite  = (id: string) =>
+  request<{ revoked: boolean }>('/invites/' + id, { method: 'DELETE' });
+
 // ── Company / Employees ───────────────────────────────────────────────────────
 export const getEmployees        = ()                    => request<any[]>('/companies/employees');
 export const addEmployee         = (data: any)           => request<any>('/companies/employees', { method: 'POST', body: JSON.stringify(data) });
@@ -66,6 +76,34 @@ export const bulkImportEmployees = (employees: any[])    => request<any>('/compa
 export const sendReminderEmail   = (id: string, email: string) => request<any>('/companies/reminders', { method: 'POST', body: JSON.stringify({ employeeId: id, email }) });
 
 // ── Types ─────────────────────────────────────────────────────────────────────
+export interface InviteResult {
+  email:     string;
+  token:     string;
+  emailSent: boolean;
+}
+
+export interface SentInvite {
+  id:          string;
+  toEmail:     string;
+  status:      'pending' | 'accepted' | 'revoked';
+  createdAt:   string;
+  expiresAt:   string;
+  acceptedAt:  string | null;
+}
+
+export interface InviteDetails {
+  id:            string;
+  toEmail:       string;
+  status:        'pending' | 'accepted' | 'revoked';
+  message:       string | null;
+  expiresAt:     string;
+  createdAt:     string;
+  fromName:      string | null;
+  fromUsername:  string | null;
+  fromAvatar:    string | null;
+  alreadyAccepted?: boolean;
+}
+
 export interface DbUser {
   id:             string;
   firebaseUid:    string;

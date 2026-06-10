@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ManualsModule } from './modules/manuals/manuals.module';
 import { SectionsModule } from './modules/sections/sections.module';
+import { InvitesModule } from './modules/invites/invites.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SectionsModule } from './modules/sections/sections.module';
     UsersModule,
     ManualsModule,
     SectionsModule,
+    InvitesModule,
   ],
   controllers: [AppController],
 })
