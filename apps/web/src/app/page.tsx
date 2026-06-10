@@ -12,6 +12,7 @@ import { FeatureCard } from '@/components/ui/FeatureCard';
 import { TestimonialCard } from '@/components/ui/TestimonialCard';
 import { PricingCard } from '@/components/ui/PricingCard';
 import { StatsBar } from '@/components/ui/StatsBar';
+import { AuthRedirect } from '@/components/AuthRedirect';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -26,6 +27,7 @@ const stagger = {
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-bg-base overflow-hidden">
+      <AuthRedirect to="/dashboard" />
       <Navbar />
 
       {/* ─── HERO ─── */}

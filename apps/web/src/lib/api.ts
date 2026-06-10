@@ -58,6 +58,13 @@ export const deleteSection  = (sectionId: string) =>
 export const reorderSections = (manualId: string, sections: Array<{ id: string; position: number }>) =>
   request<any[]>(`/manuals/${manualId}/sections/reorder`, { method: 'PATCH', body: JSON.stringify({ sections }) });
 
+// ── Company / Employees ───────────────────────────────────────────────────────
+export const getEmployees        = ()                    => request<any[]>('/companies/employees');
+export const addEmployee         = (data: any)           => request<any>('/companies/employees', { method: 'POST', body: JSON.stringify(data) });
+export const removeEmployee      = (id: string)          => request<void>(`/companies/employees/${id}`, { method: 'DELETE' });
+export const bulkImportEmployees = (employees: any[])    => request<any>('/companies/employees/bulk', { method: 'POST', body: JSON.stringify({ employees }) });
+export const sendReminderEmail   = (id: string, email: string) => request<any>('/companies/reminders', { method: 'POST', body: JSON.stringify({ employeeId: id, email }) });
+
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface DbUser {
   id:             string;
